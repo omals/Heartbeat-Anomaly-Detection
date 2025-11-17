@@ -1,61 +1,68 @@
-# Heartbeat-Anomaly-Detection
-Multiple Channel Heartbeat Audio Anomaly Classification
+# Heartbeat-Anomaly-Detection  
+**Multiple Channel Heartbeat Audio Anomaly Classification**
 
-This repository contains the implementation of a deep learning system for classifying heartbeat audio anomalies using multiple channels of audio, combining time-domain features, frequency-domain features, and spectrogram representations using a CNN-based multi-input architecture.
-The work is based on the project submitted to the Department of Computer Science, CUSAT (2024).
+This repository contains the implementation of a deep learning system for classifying heartbeat audio anomalies using multiple audio channels. The model integrates **time-domain features**, **frequency-domain features**, and **spectrogram representations** using a **CNN-based multi-input architecture**.  
+This work is based on the project submitted to the **Department of Computer Science, CUSAT (2024)**.
 
+---
 
-🔍 Overview
+## Overview
 
-Traditional cardiac diagnosis relies on manual auscultation, which is subjective and varies with clinical experience.
-This project introduces a multi-channel heartbeat audio classification model that integrates:
+Traditional cardiac diagnosis relies heavily on manual auscultation, which can be subjective and inconsistent.  
+This project proposes a **multi-channel heartbeat anomaly classification system** that combines:
 
-Preprocessed heartbeat audio signals
+- Preprocessed heartbeat audio signals  
+- Time-domain & frequency-domain feature extraction  
+- Multi-channel spectrogram generation  
+- A dual-branch CNN architecture (features + spectrograms)  
 
-Time-domain & frequency-domain feature extraction
+### The model classifies heartbeat audio into five categories:
 
-Multi-channel spectrogram generation
+- **Normal**
+- **Murmur**
+- **Extra Heart Sound**
+- **Artifact**
+- **Extrasystole**
 
-A dual-branch CNN architecture that fuses features + spectrograms
+---
 
-The model classifies heartbeat audio into five categories:
+## Method Summary
 
-Normal
+**Dataset:** PASCAL Heart Sound Challenge  
+**Preprocessing:**  
+- Audio segmentation  
+- Normalization  
+- Noise reduction  
 
-Murmur
+**Feature Extraction:**  
+- MFCC  
+- Spectral Centroid  
+- RMS Energy  
+- Spectral Rolloff  
+- Zero Crossing Rate (ZCR)  
+- Tempo  
 
-Extra Heart Sound
+**Spectrograms:**  
+- Mel-Spectrograms generated using STFT  
 
-Artifact
+**Model Architecture:**  
+- CNN branch for spectrogram input  
+- Dense branch for numerical feature input  
+- Feature fusion + fully connected classifier  
 
-Extrasystole
+**Training:**  
+- Optimizer: Adam  
+- Loss: Categorical Cross-Entropy  
+- Metrics: Accuracy, Precision, Recall, F1-score, Hamming Loss  
 
-🧠 Method Summary
+---
 
-Dataset: PASCAL Heart Sound Challenge dataset
+## Results
 
-Preprocessing: segmentation, normalization, denoising
+| Model Type                     | Accuracy | F1-Score | Notes               |
+|-------------------------------|----------|----------|---------------------|
+| Spectrogram CNN (Single-Channel) | 83.74%   | 86.28%   | Good but unstable   |
+| Feature-based KNN             | 93.76%   | High per-class | Strong baseline |
+| **Multi-Channel CNN (Proposed)** | **98.27%** | **98.16%** | **Best performance ✔** |
 
-Features Extracted: MFCC, spectral centroid, RMS, rolloff, ZCR, tempo
-
-Spectrograms: Mel-spectrogram via STFT
-
-Model:
-
-CNN for spectrogram input
-
-Dense layers for extracted features
-
-Feature fusion + classification head
-
-Training: Adam optimizer, categorical cross-entropy
-
-Metrics: accuracy, precision, F1-score, hamming loss
-
-🚀 Results
-Model Type	Accuracy	F1-Score	Notes
-Single-channel Spectrogram CNN	83.74%	86.28%	Good but unstable
-Feature-based KNN	93.76%	High per-class	Strong baseline
-Multi-channel CNN (Proposed)	98.27%	98.16%	Best performance ✔
-
-The multi-channel model significantly outperformed single-channel approaches, proving the effectiveness of combining feature vectors with spectrogram channels.
+The multi-channel model significantly outperformed both spectrogram-only and feature-only models, demonstrating the power of **feature–spectrogram fusion** for medical audio analysis.
